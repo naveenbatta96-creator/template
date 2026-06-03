@@ -1,0 +1,38 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+>
+    <Dialog
+        id="previewPayloadDialog"
+        title="API Payload Preview"
+        contentWidth="600px"
+        contentHeight="400px"
+        draggable="true"
+        resizable="true"
+    >
+        <content>
+            <VBox class="sapUiMediumMargin">
+                <TextArea
+                    id="payloadTextArea"
+                    width="100%"
+                    rows="16"
+                    growing="true"
+                    editable="false"
+                    value=""
+                    style="font-family: monospace; font-size: 13px;"
+                />
+            </VBox>
+        </content>
+        <buttons>
+            <Button
+                text="Copy to Clipboard"
+                type="Accept"
+                press=".onCopyPayloadToClipboard"
+            />
+            <Button
+                text="Close"
+                press=".onClosePreviewDialog"
+            />
+        </buttons>
+    </Dialog>
+</core:FragmentDefinition>

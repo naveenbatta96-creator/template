@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+
+    <title>Template Builder</title>
+
+    <script
+        id="sap-ui-bootstrap"
+        src="https://ui5.sap.com/resources/sap-ui-core.js"
+        data-sap-ui-theme="sap_horizon"
+        data-sap-ui-resourceroots='{
+            "com.template.builder": "./"
+        }'
+        data-sap-ui-oninit="module:sap/ui/core/ComponentSupport"
+        data-sap-ui-async="true"
+        data-sap-ui-compatVersion="edge"
+        data-sap-ui-frameOptions="trusted">
+    </script>
+</head>
+
+<body class="sapUiBody sapUiSizeCompact">
+    <div
+        data-sap-ui-component
+        data-name="com.template.builder"
+        data-id="container"
+        data-settings='{"id" : "templatebuilder"}'>
+    </div>
+</body>
+</html>

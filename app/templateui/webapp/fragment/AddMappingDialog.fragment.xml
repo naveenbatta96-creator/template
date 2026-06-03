@@ -1,0 +1,35 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+>
+    <TableSelectDialog
+        id="addMappingDialog"
+        title="Add Field to Template"
+        noDataText="No fields found"
+        items="{path: '/FieldMaster'}"
+        search=".onSearchAddMappingField"
+        confirm=".onConfirmAddMappingField"
+    >
+        <ColumnListItem>
+            <cells>
+                <ObjectStatus
+                    text="{path: 'levelName', formatter: '.formatLevelText'}"
+                    state="{path: 'levelName', formatter: '.formatLevelState', targetType: 'any'}"
+                />
+                <Text text="{fieldName}" design="Bold" />
+                <Text text="{sapType}" />
+            </cells>
+        </ColumnListItem>
+        <columns>
+            <Column width="30%">
+                <Text text="Level" />
+            </Column>
+            <Column width="50%">
+                <Text text="Field Description" />
+            </Column>
+            <Column width="20%">
+                <Text text="SAP Type" />
+            </Column>
+        </columns>
+    </TableSelectDialog>
+</core:FragmentDefinition>

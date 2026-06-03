@@ -1,0 +1,162 @@
+<mvc:View controllerName="com.template.builder.controller.ObjectPage"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.f"
+    xmlns="sap.m">
+    <Page showHeader="true" showFooter="true">
+        <customHeader>
+            <f:ShellBar title="Lockbox Template Builder" showCopilot="false" showSearch="false" showNotifications="false" showProductSwitcher="false" homeIcon="https://www.sap.com/dam/application/shared/logos/sap-logo-svg.svg" />
+        </customHeader>
+
+        <content>
+            <VBox class="sapUiMediumMargin">
+                <!-- Navigation back link -->
+                <Link text="&lt; Back to Templates" press=".onNavBack" class="sapUiTinyMarginBottom" />
+
+                <!-- Template Header Info -->
+                <Title text="{templateName}" level="H2" class="sapUiTinyMarginTop sapUiTinyMarginBottom" />
+                <Text text="Map source fields to API fields. Click Auto Map (Standard) to copy rules from the standard template." class="sapUiMediumMarginBottom" />
+
+                <!-- Metadata Card -->
+                <Panel backgroundDesign="Solid" class="sapUiContentPadding sapUiSmallMarginBottom" width="100%">
+                    <content>
+                        <HBox justifyContent="SpaceBetween" alignItems="Center" width="100%">
+                            <VBox width="25%">
+                                <Label text="Template ID" class="sapUiTinyMarginBottom" />
+                                <Label text="{
+                                        parts: [
+                                            {path: 'ID'},
+                                            {path: 'templateType'}
+                                        ],
+                                        formatter: '.formatTemplateID'
+                                    }" design="Bold" />
+                            </VBox>
+
+                            <VBox width="25%">
+                                <Label text="Template Name" class="sapUiTinyMarginBottom" />
+                                <Label text="{templateName}" design="Bold" />
+                            </VBox>
+
+                            <VBox width="20%">
+                                <Label text="Template Type" class="sapUiTinyMarginBottom" />
+                                <ObjectStatus text="{= ${sheetMode} === 'SINGLE' ? 'Single sheet' : 'Multiple sheets' }" state="{= ${sheetMode} === 'SINGLE' ? 'Information' : 'Success' }" />
+                            </VBox>
+
+                            <VBox width="30%">
+                                <Label text="Total Mappings" class="sapUiTinyMarginBottom" />
+                                <HBox alignItems="Center" width="100%">
+                                    <Text text="{metaModel>/mappingsCount} / {metaModel>/totalCount} mapped" design="Bold" class="sapUiTinyMarginEnd" />
+                                    <ProgressIndicator percentValue="{metaModel>/percentValue}" displayValue="" showValue="false" state="Success" width="140px" />
+                                </HBox>
+                            </VBox>
+                        </HBox>
+                    </content>
+                </Panel>
+
+                <!-- Mapping Operations Toolbar -->
+                <OverflowToolbar class="sapUiMediumMarginTop sapUiTinyMarginBottom">
+                    <Button text="Auto Map (Standard)" icon="sap-icon://wand" type="Accept" press=".onAutoMapStandard" class="sapUiTinyMarginEnd" />
+                    <Button text="Auto Map (AI)" icon="sap-icon://notes" press=".onAutoMapAI" class="sapUiTinyMarginEnd" />
+                    <Button text="Clear All" icon="sap-icon://delete" type="Transparent" press=".onClearAllMappings" class="sapUiTinyMarginEnd" />
+                    <ToggleButton text="Unmapped Only" icon="sap-icon://filter" pressed="{metaModel>/unmappedFilterPressed}" press=".onToggleUnmappedFilter" />
+
+                    <ToolbarSpacer />
+
+                    <Button text="Add Mapping" icon="sap-icon://add" type="Emphasized" press=".onAddMapping" />
+                </OverflowToolbar>
+
+                <!-- Mappings Grid Table -->
+                <Table id="mappingTable" updateFinished="._updateMappingStats" items="{
+                        path: 'mappings',
+                        parameters: {
+                            $expand: 'field'
+                        }
+                    }" class="sapUiSmallMarginTop">
+                    <columns>
+                        <Column width="15%">
+                            <Text text="Field Type" />
+                        </Column>
+                        <Column width="25%">
+                            <Text text="Source Field" />
+                        </Column>
+                        <Column width="25%">
+                            <Text text="API Field" />
+                        </Column>
+                        <Column width="15%">
+                            <Text text="Mapping Rule" />
+                        </Column>
+                        <Column width="15%">
+                            <Text text="Rule ID" />
+                        </Column>
+                        <Column width="5%">
+                            <Text text="Actions" />
+                        </Column>
+                    </columns>
+
+                    <items>
+                        <ColumnListItem>
+                            <cells>
+                                <!-- FIELD TYPE -->
+                                <Select selectedKey="{field/levelName}" width="100%" editable="false">
+                                    <items>
+                                        <core:Item key="HEADER" text="Header" />
+                                        <core:Item key="PAYMENT" text="Payment" />
+                                        <core:Item key="CLEARING" text="Clearing" />
+                                    </items>
+                                </Select>
+
+                                <!-- SOURCE FIELD -->
+                                <Label text="{field/fieldName}" design="Bold" />
+
+                                <!-- API FIELD -->
+                                <Select selectedKey="{apiField}" width="100%" change=".onMappingPropertyChange">
+                                    <items>
+                                        <core:Item key="" text="— None —" />
+                                        <core:Item key="CompanyCode" text="Company Code" />
+                                        <core:Item key="PaidAmount" text="Paid Amount" />
+                                        <core:Item key="ValueDate" text="Value Date" />
+                                        <core:Item key="Currency" text="Currency" />
+                                        <core:Item key="CustomerReference" text="Customer Reference" />
+                                        <core:Item key="InvoiceNumber" text="Invoice Number" />
+                                        <core:Item key="InvoiceAmount" text="Invoice Amount" />
+                                        <core:Item key="BankName" text="Bank Name" />
+                                        <core:Item key="ChequeNumber" text="Cheque Number" />
+                                    </items>
+                                </Select>
+
+                                <!-- MAPPING RULE -->
+                                <Select selectedKey="{mappingRule}" width="100%">
+                                    <items>
+                                        <core:Item key="" text="— None —" />
+                                        <core:Item key="Source" text="Source" />
+                                        <core:Item key="Rule base" text="Rule base" />
+                                        <core:Item key="Table" text="Table" />
+                                        <core:Item key="Formulae" text="Formulae" />
+                                        <core:Item key="Derived" text="Derived" />
+                                        <core:Item key="Default" text="Default" />
+                                    </items>
+                                </Select>
+
+                                <!-- RULE ID -->
+                                <Select selectedKey="{ruleId}" width="100%" />
+
+                                <!-- ACTIONS -->
+                                <Button icon="sap-icon://delete" type="Reject" press=".onDeleteMapping" />
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            </VBox>
+        </content>
+
+        <footer>
+            <OverflowToolbar>
+                <Button text="Back" icon="sap-icon://back" press=".onNavBack" />
+                <ToolbarSpacer />
+                <Button text="Preview API Payload" icon="sap-icon://developer-settings" press=".onPreviewAPIPayload" />
+                <Button text="Validate Mapping" icon="sap-icon://accept" press=".onValidateMapping" />
+                <Button icon="sap-icon://save" type="Emphasized" tooltip="Save Changes" press=".onSaveChanges" />
+            </OverflowToolbar>
+        </footer>
+    </Page>
+</mvc:View>

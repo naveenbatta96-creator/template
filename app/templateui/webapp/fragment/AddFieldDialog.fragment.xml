@@ -1,0 +1,80 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+>
+    <Dialog
+        id="addFieldDialog"
+        title="Add New SAP Field"
+        contentWidth="550px"
+        draggable="true"
+    >
+        <content>
+            <VBox class="sapUiMediumMargin">
+                <!-- Field Description -->
+                <VBox class="sapUiSmallMarginBottom" width="100%">
+                    <Label text="Field Description" required="true" class="sapUiTinyMarginBottom" />
+                    <Input
+                        id="newFieldNameInput"
+                        placeholder="e.g., Customer Reference"
+                        width="100%"
+                    />
+                </VBox>
+
+                <!-- Row of Level, Property, Max Length -->
+                <HBox width="100%" justifyContent="SpaceBetween" class="sapUiMediumMarginTop">
+                    <VBox width="30%">
+                        <Label text="Level" required="true" class="sapUiTinyMarginBottom" />
+                        <Select
+                            id="newLevelSelect"
+                            selectedKey="HEADER"
+                            width="100%"
+                        >
+                            <items>
+                                <core:Item key="HEADER" text="Header" />
+                                <core:Item key="PAYMENT" text="Payment" />
+                                <core:Item key="CLEARING" text="Clearing" />
+                            </items>
+                        </Select>
+                    </VBox>
+
+                    <VBox width="30%">
+                        <Label text="Property" required="true" class="sapUiTinyMarginBottom" />
+                        <Select
+                            id="newPropertySelect"
+                            selectedKey="OPTIONAL"
+                            width="100%"
+                        >
+                            <items>
+                                <core:Item key="OPTIONAL" text="Optional" />
+                                <core:Item key="REQUIRED" text="Required" />
+                            </items>
+                        </Select>
+                    </VBox>
+
+                    <VBox width="30%">
+                        <Label text="Max Length" required="true" class="sapUiTinyMarginBottom" />
+                        <Input
+                            id="newFieldLengthInput"
+                            value="50"
+                            type="Number"
+                            width="100%"
+                            liveChange=".onLengthLiveChange"
+                        />
+                    </VBox>
+                </HBox>
+            </VBox>
+        </content>
+
+        <buttons>
+            <Button
+                text="Cancel"
+                press=".onCloseAddFieldDialog"
+            />
+            <Button
+                text="Add Field"
+                type="Emphasized"
+                press=".onSaveNewField"
+            />
+        </buttons>
+    </Dialog>
+</core:FragmentDefinition>

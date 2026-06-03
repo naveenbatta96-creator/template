@@ -1,0 +1,112 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <Dialog id="createTemplateDialog" title="Create Template" contentWidth="1000px" draggable="true" resizable="true">
+        <content>
+            <VBox class="sapUiMediumMargin">
+                <!-- Field Catalog Table -->
+                <Table id="fieldsTable" mode="MultiSelect" growing="true" growingScrollToLoad="true" class="sapUiMediumMarginTop" items="{path: '/FieldMaster'}">
+                    <headerToolbar>
+                        <Toolbar>
+                            <Title text="Choose Fields" />
+
+                            <ToolbarSpacer />
+
+                            <Button icon="sap-icon://add" text="Add Field" type="Transparent" press=".onAddNewField" class="sapUiTinyMarginEnd" />
+
+                            <Select id="levelFilterSelect" width="180px" change=".onLevelFilterChange">
+                                <items>
+                                    <core:Item key="ALL" text="All Levels" />
+
+                                    <core:Item key="HEADER" text="Header" />
+
+                                    <core:Item key="PAYMENT" text="Payment" />
+
+                                    <core:Item key="CLEARING" text="Clearing" />
+                                </items>
+                            </Select>
+                        </Toolbar>
+                    </headerToolbar>
+
+                    <columns>
+                        <Column width="20%">
+                            <Text text="Level" />
+                        </Column>
+
+                        <Column width="50%">
+                            <Text text="Field Description" />
+                        </Column>
+
+                        <Column width="15%">
+                            <Text text="Property" />
+                        </Column>
+
+                        <Column width="15%">
+                            <Text text="Max Length" />
+                        </Column>
+                    </columns>
+
+                    <items>
+                        <ColumnListItem>
+                            <cells>
+                                <!-- LEVEL -->
+                                <ObjectStatus text="{path: 'levelName', formatter: '.formatLevelText'}" state="{path: 'levelName', formatter: '.formatLevelState', targetType: 'any'}" />
+
+                                <!-- FIELD DESCRIPTION & CUSTOM TAG -->
+                                <HBox alignItems="Center">
+                                    <Text text="{fieldName}" design="Bold" class="sapUiTinyMarginEnd" />
+                                    <ObjectStatus text="Custom" state="Indication06" visible="{path: 'ID', formatter: '.formatCustomBadge', targetType: 'any'}" />
+                                </HBox>
+
+                                <!-- PROPERTY -->
+                                <ObjectStatus text="{= ${isRequired} ? 'Required' : 'Optional' }" state="{= ${isRequired} ? 'Error' : 'None' }" />
+
+                                <!-- MAX LENGTH -->
+                                <Text text="{fieldLength}" />
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+                <!-- TEMPLATE DETAILS ROW -->
+                <HBox width="100%" alignItems="End" class="sapUiMediumMarginTop">
+                    <!-- TEMPLATE NAME -->
+                    <VBox width="40%" class="sapUiSmallMarginEnd">
+                        <Label text="Template Name" required="true" />
+                        <Input id="templateNameInput" placeholder="Enter template name" width="100%" />
+                    </VBox>
+
+                    <!-- TEMPLATE TYPE -->
+                    <VBox width="30%" class="sapUiSmallMarginEnd">
+                        <Label text="Template Type" />
+                        <Select id="templateTypeSelect" selectedKey="LOCKBOX" width="100%">
+                            <items>
+                                <core:Item key="AllLEVELS" text="All Levels" />
+                                <core:Item key="LOCKBOX" text="Lockbox" />
+                                <core:Item key="PAYMENT" text="Payment upload" />
+                                <core:Item key="CLEARING" text="Clearing upload" />
+                            </items>
+                        </Select>
+                    </VBox>
+
+                    <!-- SHEET MODE -->
+                    <VBox width="30%">
+                        <Label text="Sheet Mode" />
+                        <Select id="sheetModeSelect" selectedKey="SINGLE" width="100%">
+                            <items>
+                                <core:Item key="SINGLE" text="Single Sheet" />
+                                <core:Item key="MULTIPLE" text="Multiple Sheets" />
+                              </items>
+                        </Select>
+                    </VBox>
+                </HBox>
+            </VBox>
+        </content>
+
+        <beginButton>
+            <Button text="Save" type="Emphasized" press=".onSaveTemplate" />
+        </beginButton>
+
+        <endButton>
+            <Button text="Cancel" press=".onCloseDialog" />
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

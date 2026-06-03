@@ -1,0 +1,13 @@
+{
+  "name": "templateui",
+  "version": "1.0.0",
+  "description": "UI5 Template Builder App",
+  "scripts": {
+    "start": "ui5 serve",
+    "build": "ui5 build --clean-dest"
+  },
+  "devDependencies": {
+    "@ui5/cli": "^3.0.0",
+    "@sap/ux-ui5-tooling": "^1.0.0"
+  }
+}

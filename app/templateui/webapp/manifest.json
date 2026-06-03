@@ -1,0 +1,103 @@
+{
+  "sap.app": {
+    "id": "com.template.builder",
+    "type": "application",
+    "title": "Template Builder",
+    "dataSources": {
+      "mainService": {
+        "uri": "/odata/v4/template/",
+        "type": "OData",
+        "settings": {
+          "odataVersion": "4.0"
+        }
+      }
+    }
+  },
+
+  "sap.ui5": {
+
+    "rootView": {
+      "viewName": "com.template.builder.view.App",
+      "type": "XML",
+      "async": true,
+      "id": "app"
+    },
+
+    "dependencies": {
+      "minUI5Version": "1.120.0",
+      "libs": {
+        "sap.m": {},
+        "sap.f": {},
+        "sap.ui.layout": {}
+      }
+    },
+
+    "resourceRoots": {
+      "com.template.builder": "./"
+    },
+
+    "models": {
+      "": {
+        "type": "sap.ui.model.odata.v4.ODataModel",
+        "settings": {
+          "synchronizationMode": "None",
+          "operationMode": "Server",
+          "autoExpandSelect": true
+        },
+        "dataSource": "mainService"
+      },
+      "templateModel": {
+            "type": "sap.ui.model.json.JSONModel",
+            "settings": {
+                "templates": []
+        }
+    }
+    },
+    "counterModel": {
+      "type": "sap.ui.model.json.JSONModel",
+      "settings": {
+        "selectedCount": 0
+      }
+    },
+
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "viewType": "XML",
+        "viewPath": "com.template.builder.view",
+        "controlId": "app",
+        "controlAggregation": "pages",
+        "async": true
+      },
+
+      "routes": [
+        {
+          "name": "RouteHome",
+          "pattern": "",
+          "target": "TargetHome"
+        },
+        {
+          "name": "RouteObjectPage",
+          "pattern": "Template/{templateId}",
+          "target": "TargetObjectPage"
+        }
+      ],
+      "targets": {
+        "TargetHome": {
+          "viewName": "Home"
+        },
+        "TargetObjectPage": {
+          "viewName": "ObjectPage" 
+        }
+      }
+  },
+
+  "sap.ui": {
+    "technology": "UI5"
+  },
+
+  "sap.cloud": {
+    "public": true
+  }
+}
+}
