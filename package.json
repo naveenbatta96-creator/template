@@ -5,7 +5,8 @@
     "@cap-js/postgres": "^2.3.0",
     "@sap/cds": "^9",
     "@sap/ux-ui5-tooling": "^1.25.0",
-    "sqlite3": "^6.0.1",
+    "@sap/xssec": "^4",
+    "exceljs": "^4.4.0",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
@@ -14,24 +15,22 @@
     "@ui5/cli": "^4.0.55",
     "cds-plugin-ui5": "^0.13.0",
     "mbt": "^1.2.49",
-    "rimraf": "^5.0.5"
+    "rimraf": "^5.0.5",
+    "sqlite3": "^6.0.1"
   },
   "scripts": {
     "start": "cds-serve",
-    "watch-temolate-ui": "cds watch --open lockbox.templatebuilder.temolateui/index.html?sap-ui-xx-viewCache=false --livereload false",
-    "watch-template-ui": "cds watch --open com.template.builder.nats.templateui/index.html?sap-ui-xx-viewCache=false --livereload false",
-    "watch-templateui4map": "cds watch --open lockbox.templatebuilder.templateui4map/index.html?sap-ui-xx-viewCache=false --livereload false",
-    "undeploy": "cf undeploy lockbox-template-builder --delete-services --delete-service-keys --delete-service-brokers",
+    "watch": "cds watch --open lockbox.templatebuilder.templateui/index.html?sap-ui-xx-viewCache=false --livereload false",
     "build": "rimraf resources mta_archives && mbt build --mtar archive",
-    "deploy": "cf deploy mta_archives/archive.mtar --retries 1"
+    "deploy": "cf deploy mta_archives/archive.mtar --retries 1",
+    "undeploy": "cf undeploy lockbox-template-builder --delete-services --delete-service-keys --delete-service-brokers"
   },
   "private": true,
   "workspaces": [
     "app/*"
   ],
   "sapux": [
-    "app/temolate-ui",
-    "app/template-ui"
+    "app/templateui"
   ],
   "cds": {
     "requires": {
@@ -45,6 +44,9 @@
         "[production]": {
           "kind": "postgres"
         }
+      },
+      "[production]": {
+        "auth": "mocked"
       }
     }
   }

@@ -8,6 +8,7 @@ modules:
     path: gen/srv
     requires:
       - name: lockbox-template-builder-postgres
+      - name: lockbox-template-builder-auth
     provides:
       - name: srv-api
         properties:
@@ -40,12 +41,12 @@ modules:
       build-result: resources
       requires:
         - artifacts:
-            - lockboxtemplatebuildertemplateui4map.zip
-          name: lockboxtemplatebuildertemplateui4map
+            - lockboxtemplatebuildertemplateui.zip
+          name: lockboxtemplatebuildertemplateui
           target-path: resources/
-  - name: lockboxtemplatebuildertemplateui4map
+  - name: lockboxtemplatebuildertemplateui
     type: html5
-    path: app/templateui4map
+    path: app/templateui
     build-parameters:
       build-result: dist
       builder: custom
@@ -84,6 +85,19 @@ resources:
       service: destination
       service-name: lockbox-template-builder-destination-service
       service-plan: lite
+  - name: lockbox-template-builder-auth
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: xsuaa
+      service-plan: application
+      path: ./xs-security.json
+      config:
+        xsappname: lockbox-template-builder-${org}-${space}
+        tenant-mode: dedicated
+        oauth2-configuration:
+          credential-types:
+            - "binding-secret"
+            - "x509"
 parameters:
   deploy_mode: html5-repo
   enable-parallel-deployments: true
